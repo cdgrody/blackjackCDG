@@ -1,3 +1,71 @@
-* {
-    background: seashell;
+body,
+html {
+  background-image: url("../images/Blackjack_table.png");
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+#ctr {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 2fr 3fr 1fr;
+  grid-template-rows: 2fr 2fr 2fr 1fr;
+}
+
+.msgCtr {
+  display: grid;
+  background: red;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  /* grid-template-columns: subgrid; */
+}
+
+.betCtr {
+  display: grid;
+  background: blue;
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+  /* grid-template-columns: subgrid; */
+}
+
+.dealerCtr {
+  display: grid;
+  background: yellow;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  /* grid-template-columns: subgrid; */
+}
+
+.playerCtr {
+  display: grid;
+  background: white;
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  /* grid-template-columns: subgrid; */
+}
+
+.totalsCtr {
+  display: grid;
+  background: seagreen;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  /* grid-template-columns: subgrid; */
+}
+
+.startOverCtr {
+  display: grid;
+  background: violet;
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  /* grid-template-columns: subgrid; */
+}
+
+.btnsCtr {
+  display: grid;
+  background: orange;
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+  /* grid-template-columns: subgrid; */
 }

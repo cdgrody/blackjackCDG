@@ -1,6 +1,6 @@
 /*----- constants -----*/
 const suits = ["s", "h", "c", "d"];
-const faces = ["02",  "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "J",  "Q",  "K",  "A"]; //pretier-ignore
+const faces = ["02",  "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "J",  "Q",  "K",  "A"]; //prettier-ignore
 const cards = [];
 let playerTotal, dealerTotal;
 const hiddenCard = null;
@@ -20,13 +20,13 @@ function init() {
 
 function shuffleDeck() {
   faces.forEach(function (cardVal) {
-    suits.forEach(function(suit){
-        cards.push({
-          "cardName": cardVal,
-          "suit": suit,
-          "value": assignCardValue(cardVal),
-        });
-    })
+    suits.forEach(function (suit) {
+      cards.push({
+        cardName: cardVal,
+        suit: suit,
+        value: assignCardValue(cardVal),
+      });
+    });
   });
 }
 
@@ -49,9 +49,9 @@ function dealCard() {
     shuffleDeck();
   }
   const cardIdx = Math.floor(Math.random() * cards.length);
-  console.log(cards[cardIdx])
-    cards.splice(cardIdx, 1);
-//   }
+  const currentCard = cards[cardIdx];
+  cards.splice(cardIdx, 1);
+  return currentCard;
 }
 
 //run code
