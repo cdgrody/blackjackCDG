@@ -1,7 +1,8 @@
 body,
 html {
   /* background-image: url("../images/Blackjack_table.png"); */
-  background-color: rgb(100, 200, 50);
+  background-color: rgb(00, 100, 0);
+  color: rgb(255, 255, 224);
   height: 100%;
   width: 100%;
   padding: 10px;
@@ -11,94 +12,143 @@ html {
   display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: 4fr 6fr 2fr;
-  grid-template-rows: 4fr 4fr 4fr 2fr;
+  grid-template-columns: 2fr 6fr;
+  grid-template-rows: 2fr 1fr 2fr 2fr;
+}
+
+.startOver {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  grid-area: 1 1 2 2;
+  padding: 15px;
+}
+
+.startOver > button {
+    height: 40px;
+    width: 120px;
+    font-size: 20px;
+    color: white;
+    background: black;
 }
 
 .msgCtr {
-  display: grid;
-  grid-area: 1 1 2 2;
-  grid-template-columns: subgrid;
-  grid-template-rows: subgrid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  padding: 15px;
-}
-.msgCtr > div:first-child {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(100, 149, 237, 0.9);
   font-size: 25px;
-  grid-column: 1 / 4;
-  grid-row: 2 / 4;
+  /* width: 35%; */
+  color: white;
+  border-radius: 5%;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  /* padding: 10px; */
+}
+
+.bank {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 20px;
+  width: 100%;
+  font-size: 25px;
+  border-radius: 5%;
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+.msgCtr > div:nth-child(3) {
+  background: rgba(150, 149, 150, 0.9);
+  width: 100%;
+  font-size: 25px;
   border-radius: 5%;
   padding: 10px;
 }
 
-.betCtr {
-  display: grid;
-  padding: 50px;
+.buttons {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-content: flex-start;
   color: red;
-  font-size: 50px;
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
-  border: solid black 5px;
+  font-size: 100px;
+  padding: 00px 0px 00px 80px;
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+}
+
+.buttons > button {
+  height: 50px;
+  width: 100px;
+  margin: 10px 20px 10px 20px;
+  border-radius: 50%;
 }
 
 .dealerCtr {
-  display: grid;
-  grid-area: 2 3 1 2;
-  grid-template-columns: subgrid;
-  grid-template-rows: subgrid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-}
-
-.dealerCtr > div:first-child {
-  display: flex;
-  grid-row: 1 / 3;
-  grid-column: 1 / 2;
-  border-radius: 0%;
-  align-items: end;
-  font-size: 30px;
-  font-weight: bold;
-  color: purple;
-}
-
-.dealerCardCtr {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  grid-row: 4 / 5;
-  grid-column: 1 / 2;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0px 0px 0px 80px;
+  grid-area: 2 3 1 2;
 }
 
 .playerCtr {
-  display: grid;
-  background: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0px 0px 0px 80px;
   grid-column: 2 / 3;
   grid-row: 3 / 4;
-  /* grid-template-columns: subgrid; */
 }
 
-.totalsCtr {
-  display: grid;
-  background: seagreen;
+.totalsCtr > div {
+  background: rgba(100, 149, 237, 0.9);
+  width: 28%;
+  height: 35%;
+  padding: 5px;
+  border-radius: 20%;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   grid-column: 2 / 3;
   grid-row: 2 / 3;
-  /* grid-template-columns: subgrid; */
+  padding: 0px 0px 0px 100px;
+  font-size: 30px;
 }
 
-.startOverCtr {
-  display: grid;
-  background: violet;
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
-  /* grid-template-columns: subgrid; */
+.chips {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
 }
 
-.btnsCtr {
-  display: grid;
-  background: orange;
-  grid-column: 2 / 3;
-  grid-row: 4 / 5;
-  /* grid-template-columns: subgrid; */
+.chips > button {
+    background: grey;
+    height: 130px;
+    width: 130px;
+    font-size: 40px;
+    border-radius: 50%;
+}
+
+.chips > button:nth-child(1){
+    border: solid blue 15px;
+}
+
+.chips > button:nth-child(2){
+    border: solid red 15px;
+}
+
+.chips > button:nth-child(3){
+    border: solid green 15px;
+}
+
+button {
+    cursor: pointer;
 }
