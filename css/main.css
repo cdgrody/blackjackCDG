@@ -1,6 +1,7 @@
 body,
 html {
-  background-image: url("../images/Blackjack_table.png");
+  /* background-image: url("../images/Blackjack_table.png"); */
+  background-color: rgb(100, 200, 50);
   height: 100%;
   width: 100%;
   padding: 10px;
@@ -10,32 +11,64 @@ html {
   display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: 2fr 3fr 1fr;
-  grid-template-rows: 2fr 2fr 2fr 1fr;
+  grid-template-columns: 4fr 6fr 2fr;
+  grid-template-rows: 4fr 4fr 4fr 2fr;
 }
 
 .msgCtr {
   display: grid;
-  background: red;
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-  /* grid-template-columns: subgrid; */
+  grid-area: 1 1 2 2;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  padding: 15px;
+}
+.msgCtr > div:first-child {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 25px;
+  grid-column: 1 / 4;
+  grid-row: 2 / 4;
+  border-radius: 5%;
+  padding: 10px;
 }
 
 .betCtr {
   display: grid;
-  background: blue;
+  padding: 50px;
+  color: red;
+  font-size: 50px;
   grid-column: 1 / 2;
   grid-row: 3 / 4;
-  /* grid-template-columns: subgrid; */
+  border: solid black 5px;
 }
 
 .dealerCtr {
   display: grid;
-  background: yellow;
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-  /* grid-template-columns: subgrid; */
+  grid-area: 2 3 1 2;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.dealerCtr > div:first-child {
+  display: flex;
+  grid-row: 1 / 3;
+  grid-column: 1 / 2;
+  border-radius: 0%;
+  align-items: end;
+  font-size: 30px;
+  font-weight: bold;
+  color: purple;
+}
+
+.dealerCardCtr {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  grid-row: 4 / 5;
+  grid-column: 1 / 2;
 }
 
 .playerCtr {
