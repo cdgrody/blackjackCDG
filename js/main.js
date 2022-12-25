@@ -16,6 +16,7 @@ const playerEl = document.querySelector(".playerCtr");
 const dealerEl = document.querySelector(".dealerCtr");
 const startOverEl = document.querySelector(".startOver");
 const messageEl = document.querySelector(".msgCtr");
+const resultsEl = document.querySelector(".results");
 
 /*----- event listeners -----*/
 buttonEl.addEventListener("click", handleButtonClick);
@@ -30,6 +31,7 @@ function init() {
   tableState = 0;
   renderMessageBox();
   shuffleDeck();
+  renderScore();
 }
 
 function shuffleDeck() {
@@ -82,6 +84,9 @@ function handleButtonClick(evt) {
     dealCard(turn);
     dealCard(turn);
     renderCards();
+    tableState = 1;
+    renderMessageBox();
+    renderScore();
     //render message box to say "your move"
     //make turn state -1 to indicate it's the dealer's turn to receive cards
     //render dealer hand to have a face down card and a face up card
@@ -95,6 +100,7 @@ function handleButtonClick(evt) {
     dealCard(turn);
     clearCardRenderings();
     renderCards();
+    renderScore();
   } else if (btnType === "Stand") {
   }
   // console.log(dealerCards);
@@ -133,7 +139,7 @@ function renderMessageBox(){
   if(tableState === 0){
     messageChild.innerHTML = "Press the deal button to begin the game";
   } else if (tableState === 1){
-    messageChild.innerHTML = "Hit or Stand?  Make your move";
+    messageChild.innerHTML = "Hit or Stand?  Make your move...";
   } else if (tableState === 2){
     messageChild.innerHTML = "Game over!";
   }
@@ -156,6 +162,24 @@ function clearHands(){
   dealerCards.splice(0, dealerCards.length);
 }
 
+function calculateScores(){
+  let playerTotal = 0;
+  let dealerTotal = 0;
+  playerCards.forEach(playerCard => playerTotal += playerCard.value);
+  dealerCards.forEach(dealerCard => dealerTotal += dealerCard.value);
+  return [playerTotal, dealerTotal, dealerTotal - dealerCards[0].value]
+}
+
+function renderScore(){
+  if(tableState === 0 || tableState === 2){
+    resultsEl.children[0].innerHTML = `Dealer: `;
+    resultsEl.children[1].innerHTML = `Player: `;
+  } else {
+    let scores = calculateScores();
+    resultsEl.children[0].innerHTML = `Dealer: ${scores[2]}`;
+    resultsEl.children[1].innerHTML = `Player: ${scores[0]}`;
+  }
+}
 
 
 //run code

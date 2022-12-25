@@ -135,6 +135,7 @@ html {
     width: 130px;
     font-size: 40px;
     border-radius: 50%;
+    margin: 4px;
 }
 
 .chips > button:nth-child(1){
