@@ -9,11 +9,13 @@ const hiddenCard = null;
 let turn, tableState;
 
 /*----- cached element references -----*/
+const buttonEl = document.querySelector(".buttons");
+const playerEl = document.querySelector(".playerCtr");
 
 /*----- event listeners -----*/
+buttonEl.addEventListener("click", handleButtonClick);
 
 /*----- functions -----*/
-
 function init() {
   shuffleDeck();
 }
@@ -25,6 +27,7 @@ function shuffleDeck() {
         cardName: cardVal,
         suit: suit,
         value: assignCardValue(cardVal),
+        cardString: `card ${suit}${cardVal}`,
       });
     });
   });
@@ -52,6 +55,24 @@ function dealCard() {
   const currentCard = cards[cardIdx];
   cards.splice(cardIdx, 1);
   return currentCard;
+}
+
+function handleButtonClick(evt) {
+  const btnType = evt.target.innerHTML;
+  if (btnType === "Deal" || "Hit") renderPlayerCard();
+}
+
+function renderPlayerCard() {
+  const currentCard = dealCard();
+  const cardChild = document.createElement("div");
+  cardChild.className = currentCard.cardString;
+  console.log(playerEl.children[0].className);
+  if (playerEl.children[0].className === "card outline") {
+    playerEl.children[0].remove();
+    playerEl.appendChild(cardChild);
+  } else {
+    playerEl.appendChild(cardChild);
+  }
 }
 
 //run code
