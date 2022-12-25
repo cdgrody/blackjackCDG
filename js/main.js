@@ -85,21 +85,22 @@ function handleButtonClick(evt) {
     dealCard(turn);
     dealCard(turn);
     renderCards();
-    renderMessageBox();
     renderScore();
+    renderMessageBox();
     //remove the deal button
   } else if (btnType === "Hit") {
     dealCard(turn);
     clearCardRenderings();
     renderCards();
     renderScore();
-    if(calculateScores()[0] > 21) renderGameEnd();
+    if (calculateScores()[0] > 21) renderGameEnd();
   } else if (btnType === "Stand") {
     tableState = 2;
+    while(calculateScores()[1] < 16){
+      dealerHit();
+    }
     renderGameEnd();
   }
-  // console.log(dealerCards);
-  // console.log(playerCards);
 }
 
 function renderCards() {
@@ -127,15 +128,14 @@ function renderCardOutlines(element) {
   element.appendChild(cardChild);
 }
 
-function renderMessageBox(message){
-  console.log(tableState)
+function renderMessageBox(message) {
   messageEl.removeChild(messageEl.children[0]);
   const messageChild = document.createElement("div");
-  if(tableState === 0){
+  if (tableState === 0) {
     messageChild.innerHTML = "Press the deal button to begin the game";
-  } else if (tableState === 1){
+  } else if (tableState === 1) {
     messageChild.innerHTML = "Hit or Stand?  Make your move...";
-  } else if (tableState === 2){
+  } else if (tableState === 2) {
     messageChild.innerHTML = `Game over! ${message}!`;
   }
   messageEl.appendChild(messageChild);
@@ -152,57 +152,61 @@ function clearCardRenderings() {
   }
 }
 
-function clearHands(){
+function clearHands() {
   playerCards.splice(0, playerCards.length);
   dealerCards.splice(0, dealerCards.length);
 }
 
-function calculateScores(){
+function calculateScores() {
   let playerTotal = 0;
   let dealerTotal = 0;
-  playerCards.forEach(playerCard => playerTotal += playerCard.value);
-  dealerCards.forEach(dealerCard => dealerTotal += dealerCard.value);
-  return [playerTotal, dealerTotal, dealerTotal - dealerCards[0].value]
+  playerCards.forEach((playerCard) => (playerTotal += playerCard.value));
+  dealerCards.forEach((dealerCard) => (dealerTotal += dealerCard.value));
+  return [playerTotal, dealerTotal, dealerTotal - dealerCards[0].value];
 }
 
-function renderScore(){
-  if(tableState === 0){
+function renderScore() {
+  if (tableState === 0) {
     resultsEl.children[0].innerHTML = `Dealer: `;
     resultsEl.children[1].innerHTML = `Player: `;
   } else {
     let scores = calculateScores();
-    if(tableState !== 2) {}resultsEl.children[0].innerHTML = `Dealer: ${scores[2]}`;
-    if(tableState === 2) resultsEl.children[0].innerHTML = `Dealer: ${scores[1]}`;
+    if (tableState !== 2) {
+    }
+    resultsEl.children[0].innerHTML = `Dealer: ${scores[2]}`;
+    if (tableState === 2)
+      resultsEl.children[0].innerHTML = `Dealer: ${scores[1]}`;
     resultsEl.children[1].innerHTML = `Player: ${scores[0]}`;
   }
 }
 
-function renderGameEnd(){
+function renderGameEnd() {
   let scores = calculateScores();
-  console.log(scores);
-  if(scores[1] > 21){
+  if (scores[1] > 21) {
     renderMessageBox("Player wins, dealer busted");
-  } else if(scores[0] > 21){
+  } else if (scores[0] > 21) {
     tableState = 2;
     renderMessageBox("Dealer wins, player busted");
-  } else if(scores[0] > scores[1]){
+  } else if (scores[0] > scores[1]) {
     renderMessageBox("Player wins");
-  } else if(scores[0] < scores[1]){
-    renderMessageBox("Player wins 4");
-  } else if(scores[0] === scores[1]){
-    return "Draw, play again";
-  } else{
-    console.log(tableState, "No Result Yet")
+  } else if (scores[0] < scores[1]) {
+    renderMessageBox("Dealer wins");
+  } else if (scores[0] === scores[1]) {
+    renderMessageBox("Draw");
+  } else {
+    console.log(tableState, "No Result Yet");
     return;
   }
   dealerEl.children[0].setAttribute("class", dealerCards[0].cardString); //reveal hidden card!
   renderScore();
 }
 
-function dealerHit(){
-  
+function dealerHit() {
+  turn = -1;
+  dealCard(turn);
+  renderCards();
+  renderScore();
 }
-
 
 //run code
 init();
