@@ -77,6 +77,7 @@ function dealCard(turn) {
 function handleButtonClick(evt) {
   const btnType = evt.target.innerHTML;
   if (btnType === "Deal") {
+    tableState = 1;
     turn = -1;
     dealCard(turn);
     dealCard(turn);
@@ -84,24 +85,18 @@ function handleButtonClick(evt) {
     dealCard(turn);
     dealCard(turn);
     renderCards();
-    tableState = 1;
     renderMessageBox();
     renderScore();
-    //render message box to say "your move"
-    //make turn state -1 to indicate it's the dealer's turn to receive cards
-    //render dealer hand to have a face down card and a face up card
-    //store card value in the dealerCards array
-    //make turn state 1 to indicate it's the players's turn to receive cards
-    //render player two face up cards
-    //store player cards in the playerCards array
-    //render total messages for player and dealer
     //remove the deal button
   } else if (btnType === "Hit") {
     dealCard(turn);
     clearCardRenderings();
     renderCards();
     renderScore();
+    if(calculateScores()[0] > 21) renderGameEnd();
   } else if (btnType === "Stand") {
+    tableState = 2;
+    renderGameEnd();
   }
   // console.log(dealerCards);
   // console.log(playerCards);
@@ -116,7 +111,6 @@ function renderCards() {
   });
   dealerCards.forEach(function (dealerCard) {
     const cardChild = document.createElement("div");
-    // console.log("dealer card length" + dealerEl.children.length)
     if (!dealerEl.children.length) {
       cardChild.className = "card back";
       dealerEl.appendChild(cardChild);
@@ -133,7 +127,8 @@ function renderCardOutlines(element) {
   element.appendChild(cardChild);
 }
 
-function renderMessageBox(){
+function renderMessageBox(message){
+  console.log(tableState)
   messageEl.removeChild(messageEl.children[0]);
   const messageChild = document.createElement("div");
   if(tableState === 0){
@@ -141,7 +136,7 @@ function renderMessageBox(){
   } else if (tableState === 1){
     messageChild.innerHTML = "Hit or Stand?  Make your move...";
   } else if (tableState === 2){
-    messageChild.innerHTML = "Game over!";
+    messageChild.innerHTML = `Game over! ${message}!`;
   }
   messageEl.appendChild(messageChild);
 }
@@ -171,14 +166,41 @@ function calculateScores(){
 }
 
 function renderScore(){
-  if(tableState === 0 || tableState === 2){
+  if(tableState === 0){
     resultsEl.children[0].innerHTML = `Dealer: `;
     resultsEl.children[1].innerHTML = `Player: `;
   } else {
     let scores = calculateScores();
-    resultsEl.children[0].innerHTML = `Dealer: ${scores[2]}`;
+    if(tableState !== 2) {}resultsEl.children[0].innerHTML = `Dealer: ${scores[2]}`;
+    if(tableState === 2) resultsEl.children[0].innerHTML = `Dealer: ${scores[1]}`;
     resultsEl.children[1].innerHTML = `Player: ${scores[0]}`;
   }
+}
+
+function renderGameEnd(){
+  let scores = calculateScores();
+  console.log(scores);
+  if(scores[1] > 21){
+    renderMessageBox("Player wins, dealer busted");
+  } else if(scores[0] > 21){
+    tableState = 2;
+    renderMessageBox("Dealer wins, player busted");
+  } else if(scores[0] > scores[1]){
+    renderMessageBox("Player wins");
+  } else if(scores[0] < scores[1]){
+    renderMessageBox("Player wins 4");
+  } else if(scores[0] === scores[1]){
+    return "Draw, play again";
+  } else{
+    console.log(tableState, "No Result Yet")
+    return;
+  }
+  dealerEl.children[0].setAttribute("class", dealerCards[0].cardString); //reveal hidden card!
+  renderScore();
+}
+
+function dealerHit(){
+  
 }
 
 
