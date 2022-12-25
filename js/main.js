@@ -20,7 +20,7 @@ const resultsEl = document.querySelector(".results");
 
 /*----- event listeners -----*/
 buttonEl.addEventListener("click", handleButtonClick);
-startOverEl.addEventListener("click", init);
+startOverEl.addEventListener("click", handleRestart);
 
 /*----- functions -----*/
 function init() {
@@ -28,10 +28,16 @@ function init() {
   clearHands();
   renderCardOutlines(playerEl);
   renderCardOutlines(dealerEl);
+  if(!tableState) shuffleDeck();
   tableState = 0;
   renderMessageBox();
-  shuffleDeck();
   renderScore();
+  renderButtons();
+}
+
+function handleRestart(){
+  tableState = 0;
+  init();
 }
 
 function shuffleDeck() {
@@ -51,11 +57,9 @@ function assignCardValue(cardVal) {
   if (parseInt(cardVal)) {
     //if the card is a number, return that number
     return parseInt(cardVal);
-  } else if (cardVal === "A") {
-    //aces = 11 in blackjack
+  } else if (cardVal === "A") {//aces = 11 in blackjack
     return 11;
-  } else {
-    //royals = 10 in blackjack
+  } else {//royals = 10 in blackjack
     return 10;
   }
 }
@@ -77,6 +81,7 @@ function dealCard(turn) {
 function handleButtonClick(evt) {
   const btnType = evt.target.innerHTML;
   if (btnType === "Deal") {
+    if(tableState === 2) init();
     tableState = 1;
     turn = -1;
     dealCard(turn);
@@ -84,6 +89,7 @@ function handleButtonClick(evt) {
     turn = 1;
     dealCard(turn);
     dealCard(turn);
+    renderButtons();
     renderCards();
     renderScore();
     renderMessageBox();
@@ -152,6 +158,29 @@ function clearCardRenderings() {
   }
 }
 
+function clearButtonRenderings() {
+  const buttonLength = buttonEl.children.length;
+  for (let i = 0; i < buttonLength; i++) {
+    buttonEl.removeChild(buttonEl.children[0]);
+  }
+}
+
+function renderButtons(){
+  clearButtonRenderings();
+  if (tableState === 0 || tableState === 2){
+    const dealChild = document.createElement("button");
+    dealChild.innerHTML = "Deal";
+    buttonEl.appendChild(dealChild);
+  } else {
+    const hitChild = document.createElement("button");
+    const standChild = document.createElement("button");
+    hitChild.innerHTML = "Hit";
+    buttonEl.appendChild(hitChild);
+    standChild.innerHTML = "Stand";
+    buttonEl.appendChild(standChild);
+  }
+}
+
 function clearHands() {
   playerCards.splice(0, playerCards.length);
   dealerCards.splice(0, dealerCards.length);
@@ -200,12 +229,12 @@ function renderGameEnd() {
     return;
   }
   dealerEl.children[0].setAttribute("class", dealerCards[0].cardString); //reveal hidden card!
+  renderButtons();
   renderScore();
 }
 
 function aceValueAdjustment(deckCards, total) {
   const aceCount = deckCards.filter(deckCard => deckCard.cardName === "A");
-  console.log(aceCount.length);
   if(aceCount === 0) return total;
   for(let i = 0; i < aceCount.length; i++){
     total -= 10;
