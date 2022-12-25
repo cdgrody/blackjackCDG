@@ -161,7 +161,9 @@ function calculateScores() {
   let playerTotal = 0;
   let dealerTotal = 0;
   playerCards.forEach((playerCard) => (playerTotal += playerCard.value));
+  if(playerTotal > 21) playerTotal = aceValueAdjustment(playerCards, playerTotal);
   dealerCards.forEach((dealerCard) => (dealerTotal += dealerCard.value));
+  if(dealerTotal > 21) dealerTotal = aceValueAdjustment(dealerCards, dealerTotal);
   return [playerTotal, dealerTotal, dealerTotal - dealerCards[0].value];
 }
 
@@ -199,6 +201,17 @@ function renderGameEnd() {
   }
   dealerEl.children[0].setAttribute("class", dealerCards[0].cardString); //reveal hidden card!
   renderScore();
+}
+
+function aceValueAdjustment(deckCards, total) {
+  const aceCount = deckCards.filter(deckCard => deckCard.cardName === "A");
+  console.log(aceCount.length);
+  if(aceCount === 0) return total;
+  for(let i = 0; i < aceCount.length; i++){
+    total -= 10;
+    if(total < 22) return total;
+  }
+  return total;
 }
 
 function dealerHit() {
