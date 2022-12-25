@@ -2,7 +2,7 @@
 const suits = ["s", "h", "c", "d"];
 const faces = ["02",  "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "J",  "Q",  "K",  "A"]; //prettier-ignore
 const cards = [];
-const playerCards =[];
+const playerCards = [];
 const dealerCards = [];
 let playerTotal, dealerTotal;
 const hiddenCard = null;
@@ -14,12 +14,21 @@ let turn, tableState;
 const buttonEl = document.querySelector(".buttons");
 const playerEl = document.querySelector(".playerCtr");
 const dealerEl = document.querySelector(".dealerCtr");
+const startOverEl = document.querySelector(".startOver");
+const messageEl = document.querySelector(".msgCtr");
 
 /*----- event listeners -----*/
 buttonEl.addEventListener("click", handleButtonClick);
+startOverEl.addEventListener("click", init);
 
 /*----- functions -----*/
 function init() {
+  clearCardRenderings();
+  clearHands();
+  renderCardOutlines(playerEl);
+  renderCardOutlines(dealerEl);
+  tableState = 0;
+  renderMessageBox();
   shuffleDeck();
 }
 
@@ -55,7 +64,7 @@ function dealCard(turn) {
     shuffleDeck();
   }
   const cardIdx = Math.floor(Math.random() * cards.length);
-  if(turn === 1) {
+  if (turn === 1) {
     playerCards.push(cards[cardIdx]);
   } else {
     dealerCards.push(cards[cardIdx]);
@@ -65,7 +74,7 @@ function dealCard(turn) {
 
 function handleButtonClick(evt) {
   const btnType = evt.target.innerHTML;
-  if (btnType === "Deal"){
+  if (btnType === "Deal") {
     turn = -1;
     dealCard(turn);
     dealCard(turn);
@@ -82,25 +91,24 @@ function handleButtonClick(evt) {
     //store player cards in the playerCards array
     //render total messages for player and dealer
     //remove the deal button
-  } else if (btnType === "Hit"){
+  } else if (btnType === "Hit") {
     dealCard(turn);
     clearCardRenderings();
     renderCards();
-  } else if (btnType === "Stand"){
-
-  };
+  } else if (btnType === "Stand") {
+  }
   // console.log(dealerCards);
   // console.log(playerCards);
 }
 
 function renderCards() {
   clearCardRenderings();
-  playerCards.forEach(function(playerCard){
+  playerCards.forEach(function (playerCard) {
     const cardChild = document.createElement("div");
     cardChild.className = playerCard.cardString;
-      playerEl.appendChild(cardChild);
+    playerEl.appendChild(cardChild);
   });
-  dealerCards.forEach(function(dealerCard){
+  dealerCards.forEach(function (dealerCard) {
     const cardChild = document.createElement("div");
     // console.log("dealer card length" + dealerEl.children.length)
     if (!dealerEl.children.length) {
@@ -113,17 +121,42 @@ function renderCards() {
   });
 }
 
-function clearCardRenderings(){
+function renderCardOutlines(element) {
+  const cardChild = document.createElement("div");
+  cardChild.className = "card outline";
+  element.appendChild(cardChild);
+}
+
+function renderMessageBox(){
+  messageEl.removeChild(messageEl.children[0]);
+  const messageChild = document.createElement("div");
+  if(tableState === 0){
+    messageChild.innerHTML = "Press the deal button to begin the game";
+  } else if (tableState === 1){
+    messageChild.innerHTML = "Hit or Stand?  Make your move";
+  } else if (tableState === 2){
+    messageChild.innerHTML = "Game over!";
+  }
+  messageEl.appendChild(messageChild);
+}
+
+function clearCardRenderings() {
   const playerDeckLength = playerEl.children.length;
   const dealerDeckLength = dealerEl.children.length;
-  for(let i=0; i < playerDeckLength; i++){
+  for (let i = 0; i < playerDeckLength; i++) {
     playerEl.removeChild(playerEl.children[0]);
   }
-  for(let i=0; i < dealerDeckLength; i++){
+  for (let i = 0; i < dealerDeckLength; i++) {
     dealerEl.removeChild(dealerEl.children[0]);
   }
 }
 
+function clearHands(){
+  playerCards.splice(0, playerCards.length);
+  dealerCards.splice(0, dealerCards.length);
+}
+
+
+
 //run code
 init();
-console.log(dealerEl.children);
