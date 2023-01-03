@@ -43,6 +43,7 @@ function handleButtonClick(evt) {
     dealCard(turn);
     turn = 1;
     dealCard(turn);
+    renderChips();
     renderButtons();
     renderCards();
     renderScore();
@@ -61,7 +62,6 @@ function handleButtonClick(evt) {
     renderGameEnd();
   } else if(btnType === "Play Again"){
     init();
-    tableState = 0;
   } else if(btnType === "Reset Bet"){
     bank += bet;
     bet = 0;
@@ -81,6 +81,7 @@ function init() {
     bank = 100;
   }
   tableState = 0;
+  renderChips();
   renderMessageBox();
   renderScore();
   renderBank();
@@ -89,7 +90,7 @@ function init() {
 
 function placeBet(evt) {
   let betAmount = parseInt(evt.target.innerHTML.split("$")[1]);
-  if (bet + betAmount <= bank) {
+  if (bank - betAmount >= 0) {
     bet += betAmount;
     bank -= betAmount;
     tableState = 3; //ready to show the deal button
@@ -203,6 +204,31 @@ function clearCardRenderings() {
   }
   for (let i = 0; i < dealerDeckLength; i++) {
     dealerEl.removeChild(dealerEl.children[0]);
+  }
+}
+
+function clearChipRenderings() {
+  const chipLength = chipsEl.children.length;
+  for (let i = 0; i < chipLength; i++) {
+    chipsEl.removeChild(chipsEl.children[0]);
+  }
+}
+
+function renderChips(){
+  clearChipRenderings();
+  if (tableState === 0){
+    const bet5 = document.createElement("button");
+    const bet10 = document.createElement("button");
+    const bet20 = document.createElement("button");
+    bet5.innerHTML = "$5"
+    bet10.innerHTML = "$10"
+    bet20.innerHTML = "$20"
+    bet5.setAttribute("class", "preHand");
+    bet5.setAttribute("class", "preHand");
+    bet5.setAttribute("class", "preHand");
+    chipsEl.appendChild(bet5);
+    chipsEl.appendChild(bet10);
+    chipsEl.appendChild(bet20);
   }
 }
 

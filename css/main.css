@@ -39,7 +39,7 @@ html {
   background: rgba(100, 149, 237, 0.9);
   font-size: 25px;
   color: white;
-  border-radius: 50%;
+  border-radius: 5%;
   grid-column: 1 / 2;
   grid-row: 2 / 3;
 }
@@ -130,23 +130,24 @@ html {
 
 .chips > button {
     background: grey;
-    height: 130px;
-    width: 130px;
-    font-size: 40px;
+    height: 80px;
+    width: 80px;
+    font-size: 30px;
+    text-align: center;
     border-radius: 50%;
     margin: 4px;
 }
 
 .chips > button:nth-child(1){
-    border: solid blue 15px;
+    border: solid blue 10px;
 }
 
 .chips > button:nth-child(2){
-    border: solid red 15px;
+    border: solid red 10px;
 }
 
 .chips > button:nth-child(3){
-    border: solid green 15px;
+    border: solid green 10px;
 }
 
 button {
