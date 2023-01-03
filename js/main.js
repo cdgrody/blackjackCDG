@@ -10,7 +10,7 @@ let bank;
 let bet = 0;
 
 /*----- app's state (variables) -----*/
-let turn, tableState, winner;
+let turn, tableState, winner, blackJackState;
 let firstMove = 0;
 
 /*----- cached element references -----*/
@@ -63,21 +63,26 @@ function handleButtonClick(evt) {
     firstMove = 0;
     renderButtons();
     tableState = 2;
-    while (calculateScores()[1] < 16) {
+    while (calculateScores()[1] <= 16) {
       dealerHit();
     }
     checkGameEnd();
   } else if(btnType === "Double"){
     if (bank - bet >= 0){ //if there is enough money in the bank, double the bet
       firstMove = 0;
+      tableState = 2;
       bank -= bet;
       bet += bet;
       renderBank();
       dealCard(turn);
-      renderButtons();
-      renderCards();
-      renderScore();
-      if (calculateScores()[0] > 21) checkGameEnd();
+      while (calculateScores()[1] <= 16) {
+        dealerHit();
+      }
+      checkGameEnd();
+      // renderButtons();
+      // renderCards();
+      // renderScore();
+      // if (calculateScores()[0] > 21) checkGameEnd();
     } else {
       renderMessageBox();
       console.log(tableState)
@@ -320,8 +325,8 @@ function renderScore() {
 
 function checkBlackJack(){
   if(calculateScores()[1] === 21 || calculateScores()[0] === 21){
-    if(calculateScores()[0] === 21) bet += .5 * bet;
     tableState = 2;
+    blackJackState = 1;
     checkGameEnd();
   }
 }
@@ -336,9 +341,11 @@ function checkGameEnd() {
     renderMessageBox(`Dealer wins, player busted and loses $${bet}`);
     winner = -1;
   } else if (scores[0] > scores[1]) {
+    if(!!blackJackState === 1) renderMessageBox(`Blackjack! Player wins $${bet+=1.5*bet}`);
     renderMessageBox(`Player wins $${bet}`);
     winner = 1;
   } else if (scores[0] < scores[1]) {
+    if(blackJackState === 1) renderMessageBox(`Blackjack! Player loses $${bet}`);
     renderMessageBox(`Dealer wins, player loses $${bet}`);
     winner = -1;
   } else if (scores[0] === scores[1]) {
@@ -350,7 +357,9 @@ function checkGameEnd() {
     return;
   }
   dealerEl.children[0].setAttribute("class", dealerCards[0].cardString); //reveal hidden card!
-  if (winner === 1) bank += 2 * bet;
+  if (winner === 1 && !blackJackState) bank += 2 * bet;
+  if (winner === 1 && !!blackJackState) bank += 2.5 * bet;
+  blackJackState = 0;
   bet = 0;
   renderBank();
   renderButtons();
