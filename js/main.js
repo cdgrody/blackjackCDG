@@ -6,11 +6,12 @@ const playerCards = [];
 const dealerCards = [];
 let playerTotal, dealerTotal;
 const hiddenCard = null;
-let bank,
-  bet = 0;
+let bank;
+let bet = 0;
 
 /*----- app's state (variables) -----*/
 let turn, tableState, winner;
+let firstMove = 0;
 
 /*----- cached element references -----*/
 const buttonEl = document.querySelector(".buttons");
@@ -44,22 +45,43 @@ function handleButtonClick(evt) {
     turn = 1;
     dealCard(turn);
     renderChips();
-    renderButtons();
     renderCards();
     renderScore();
     renderMessageBox();
+    firstMove = 1;
+    renderButtons();
+    checkBlackJack();
   } else if (btnType === "Hit") {
+    firstMove = 0;
     dealCard(turn);
     clearCardRenderings();
+    renderButtons();
     renderCards();
     renderScore();
     if (calculateScores()[0] > 21) checkGameEnd();
   } else if (btnType === "Stand") {
+    firstMove = 0;
+    renderButtons();
     tableState = 2;
     while (calculateScores()[1] < 16) {
       dealerHit();
     }
     checkGameEnd();
+  } else if(btnType === "Double"){
+    if (bank - bet >= 0){ //if there is enough money in the bank, double the bet
+      firstMove = 0;
+      bank -= bet;
+      bet += bet;
+      renderBank();
+      dealCard(turn);
+      renderButtons();
+      renderCards();
+      renderScore();
+      if (calculateScores()[0] > 21) checkGameEnd();
+    } else {
+      renderMessageBox();
+      console.log(tableState)
+    }
   } else if(btnType === "Play Again"){
     init();
   } else if(btnType === "Reset Bet"){
@@ -98,17 +120,9 @@ function placeBet(evt) {
     tableState = 3; //ready to show the deal button
     renderButtons();
     renderBank();
-    //render new bet to the screen
-    //render deal button
-    //render reset bet button
   } else {
     renderMessageBox("Bet amount cannot exceed bank total!");
-    console.log(tableState);
-    //don't update bet total
-    //render message board to say bet amount is too high, bet again
   }
-  //update bet total and total remaining
-  //render updated totals
 }
 
 function renderBank() {
@@ -194,6 +208,7 @@ function renderMessageBox(message) {
     messageChild.innerHTML = `${message}`;
   } else if (tableState === 1) {
     messageChild.innerHTML = "Hit or Stand?  Make your move...";
+    if(firstMove) messageChild.innerHTML = "Sorry. Not enough funds available to double.";
   } else if (tableState === 2) {
     messageChild.innerHTML = `Game over! ${message}!`;
   } else if(tableState === 4){
@@ -257,10 +272,13 @@ function renderButtons() {
   } else if (tableState === 1) {
     const hitChild = document.createElement("button");
     const standChild = document.createElement("button");
+    const doubleChild = document.createElement("button");
     hitChild.innerHTML = "Hit";
     buttonEl.appendChild(hitChild);
     standChild.innerHTML = "Stand";
     buttonEl.appendChild(standChild);
+    doubleChild.innerHTML = "Double";
+    if(firstMove) buttonEl.appendChild(doubleChild);
   } else if (tableState === 2){
     const playAgainChild = document.createElement("button");
     playAgainChild.innerHTML = "Play Again";
@@ -300,6 +318,14 @@ function renderScore() {
   }
 }
 
+function checkBlackJack(){
+  if(calculateScores()[1] === 21 || calculateScores()[0] === 21){
+    if(calculateScores()[0] === 21) bet += .5 * bet;
+    tableState = 2;
+    checkGameEnd();
+  }
+}
+
 function checkGameEnd() {
   let scores = calculateScores();
   if (scores[1] > 21) {
@@ -336,7 +362,7 @@ function renderEndgame(){
   clearButtonRenderings();
   clearChipRenderings();
   tableState = 4;
-  renderMessageBox("Game over! you ran out of money. Hit restart to reload your account.")
+  renderMessageBox("Game over! You ran out of money.")
 }
 
 function aceValueAdjustment(deckCards, total) {
