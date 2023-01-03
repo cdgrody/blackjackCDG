@@ -53,13 +53,13 @@ function handleButtonClick(evt) {
     clearCardRenderings();
     renderCards();
     renderScore();
-    if (calculateScores()[0] > 21) renderGameEnd();
+    if (calculateScores()[0] > 21) checkGameEnd();
   } else if (btnType === "Stand") {
     tableState = 2;
     while (calculateScores()[1] < 16) {
       dealerHit();
     }
-    renderGameEnd();
+    checkGameEnd();
   } else if(btnType === "Play Again"){
     init();
   } else if(btnType === "Reset Bet"){
@@ -68,6 +68,7 @@ function handleButtonClick(evt) {
     renderBank();
     tableState = 0;
     renderButtons();
+    renderMessageBox("Place your bet to begin the game");
   }
 }
 
@@ -78,11 +79,12 @@ function init() {
   renderCardOutlines(dealerEl);
   if (!tableState) {
     shuffleDeck();
+    bet = 0;
     bank = 100;
   }
   tableState = 0;
   renderChips();
-  renderMessageBox();
+  renderMessageBox("Place your bet to begin the game");
   renderScore();
   renderBank();
   renderButtons();
@@ -100,6 +102,8 @@ function placeBet(evt) {
     //render deal button
     //render reset bet button
   } else {
+    renderMessageBox("Bet amount cannot exceed bank total!");
+    console.log(tableState);
     //don't update bet total
     //render message board to say bet amount is too high, bet again
   }
@@ -110,7 +114,6 @@ function placeBet(evt) {
 function renderBank() {
   bankTotalEl.innerHTML = `Bank: $${bank}`;
   betEl.innerHTML = `Bet: $${bet}`;
-  console.log(bank);
 }
 
 function handleRestart() {
@@ -186,12 +189,15 @@ function renderCardOutlines(element) {
 function renderMessageBox(message) {
   messageEl.removeChild(messageEl.children[0]);
   const messageChild = document.createElement("div");
-  if (tableState === 0) {
-    messageChild.innerHTML = "Press the deal button to begin the game";
+  if (tableState === 0 || tableState === 3) {
+    // messageChild.innerHTML = "Place your bet to begin the game";
+    messageChild.innerHTML = `${message}`;
   } else if (tableState === 1) {
     messageChild.innerHTML = "Hit or Stand?  Make your move...";
   } else if (tableState === 2) {
     messageChild.innerHTML = `Game over! ${message}!`;
+  } else if(tableState === 4){
+    messageChild.innerHTML = `${message}`;
   }
   messageEl.appendChild(messageChild);
 }
@@ -294,7 +300,7 @@ function renderScore() {
   }
 }
 
-function renderGameEnd() {
+function checkGameEnd() {
   let scores = calculateScores();
   if (scores[1] > 21) {
     renderMessageBox(`Player wins $${bet}, dealer busted`);
@@ -323,6 +329,14 @@ function renderGameEnd() {
   renderBank();
   renderButtons();
   renderScore();
+  if (bank === 0) renderEndgame();
+}
+
+function renderEndgame(){
+  clearButtonRenderings();
+  clearChipRenderings();
+  tableState = 4;
+  renderMessageBox("Game over! you ran out of money. Hit restart to reload your account.")
 }
 
 function aceValueAdjustment(deckCards, total) {
