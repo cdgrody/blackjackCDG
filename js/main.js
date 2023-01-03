@@ -6,7 +6,8 @@ const playerCards = [];
 const dealerCards = [];
 let playerTotal, dealerTotal;
 const hiddenCard = null;
-let bank, bet = 0;
+let bank,
+  bet = 0;
 
 /*----- app's state (variables) -----*/
 let turn, tableState, winner;
@@ -26,13 +27,13 @@ const betEl = document.querySelector(".bank div:last-child");
 /*----- event listeners -----*/
 buttonEl.addEventListener("click", handleButtonClick);
 startOverEl.addEventListener("click", handleRestart);
-chipsEl.addEventListener("click", placeBet)
+chipsEl.addEventListener("click", placeBet);
 
 /*----- functions -----*/
 function handleButtonClick(evt) {
   const btnType = evt.target.innerHTML;
   if (btnType === "Deal") {
-    if(tableState === 2) init();
+    if (tableState === 2) init();
     tableState = 1;
     turn = -1;
     dealCard(turn);
@@ -54,23 +55,31 @@ function handleButtonClick(evt) {
     if (calculateScores()[0] > 21) renderGameEnd();
   } else if (btnType === "Stand") {
     tableState = 2;
-    while(calculateScores()[1] < 16){
+    while (calculateScores()[1] < 16) {
       dealerHit();
     }
     renderGameEnd();
+  } else if(btnType === "Play Again"){
+    init();
+    tableState = 0;
+  } else if(btnType === "Reset Bet"){
+    bank += bet;
+    bet = 0;
+    renderBank();
+    tableState = 0;
+    renderButtons();
   }
 }
-
 
 function init() {
   clearCardRenderings();
   clearHands();
   renderCardOutlines(playerEl);
   renderCardOutlines(dealerEl);
-  if(!tableState){
+  if (!tableState) {
     shuffleDeck();
     bank = 100;
-  } 
+  }
   tableState = 0;
   renderMessageBox();
   renderScore();
@@ -78,16 +87,18 @@ function init() {
   renderButtons();
 }
 
-function placeBet(evt){
-  let betAmount = parseInt(evt.target.innerHTML.split('$')[1]);
-  if(bet + betAmount <= bank){
+function placeBet(evt) {
+  let betAmount = parseInt(evt.target.innerHTML.split("$")[1]);
+  if (bet + betAmount <= bank) {
     bet += betAmount;
     bank -= betAmount;
+    tableState = 3; //ready to show the deal button
+    renderButtons();
     renderBank();
     //render new bet to the screen
     //render deal button
     //render reset bet button
-  } else{
+  } else {
     //don't update bet total
     //render message board to say bet amount is too high, bet again
   }
@@ -95,23 +106,13 @@ function placeBet(evt){
   //render updated totals
 }
 
-function renderBank(){
-  bankTotalEl.innerHTML = `Bank: $${bank}`
-  betEl.innerHTML = `Bet: $${bet}`
-  console.log(bank)
+function renderBank() {
+  bankTotalEl.innerHTML = `Bank: $${bank}`;
+  betEl.innerHTML = `Bet: $${bet}`;
+  console.log(bank);
 }
 
-// function updateBank(winner){
-//   if (winner === 1){
-//     bank += bet;
-//   } else if (winner === -1){
-//     bank -= bet;
-//     //if bank = 0, render lose game
-//   } 
-//   bet = 0;
-// }
-
-function handleRestart(){
+function handleRestart() {
   tableState = 0;
   init();
 }
@@ -133,9 +134,11 @@ function assignCardValue(cardVal) {
   if (parseInt(cardVal)) {
     //if the card is a number, return that number
     return parseInt(cardVal);
-  } else if (cardVal === "A") {//aces = 11 in blackjack
+  } else if (cardVal === "A") {
+    //aces = 11 in blackjack
     return 11;
-  } else {//royals = 10 in blackjack
+  } else {
+    //royals = 10 in blackjack
     return 10;
   }
 }
@@ -153,7 +156,6 @@ function dealCard(turn) {
   }
   cards.splice(cardIdx, 1);
 }
-
 
 function renderCards() {
   clearCardRenderings();
@@ -211,19 +213,26 @@ function clearButtonRenderings() {
   }
 }
 
-function renderButtons(){
+function renderButtons() {
   clearButtonRenderings();
-  if (tableState === 0 || tableState === 2){
+  if (tableState === 3) {
     const dealChild = document.createElement("button");
+    const resetBetChild = document.createElement("button");
     dealChild.innerHTML = "Deal";
+    resetBetChild.innerHTML = "Reset Bet";
     buttonEl.appendChild(dealChild);
-  } else {
+    buttonEl.appendChild(resetBetChild);
+  } else if (tableState === 1) {
     const hitChild = document.createElement("button");
     const standChild = document.createElement("button");
     hitChild.innerHTML = "Hit";
     buttonEl.appendChild(hitChild);
     standChild.innerHTML = "Stand";
     buttonEl.appendChild(standChild);
+  } else if (tableState === 2){
+    const playAgainChild = document.createElement("button");
+    playAgainChild.innerHTML = "Play Again";
+    buttonEl.appendChild(playAgainChild);
   }
 }
 
@@ -236,9 +245,11 @@ function calculateScores() {
   let playerTotal = 0;
   let dealerTotal = 0;
   playerCards.forEach((playerCard) => (playerTotal += playerCard.value));
-  if(playerTotal > 21) playerTotal = aceValueAdjustment(playerCards, playerTotal);
+  if (playerTotal > 21)
+    playerTotal = aceValueAdjustment(playerCards, playerTotal);
   dealerCards.forEach((dealerCard) => (dealerTotal += dealerCard.value));
-  if(dealerTotal > 21) dealerTotal = aceValueAdjustment(dealerCards, dealerTotal);
+  if (dealerTotal > 21)
+    dealerTotal = aceValueAdjustment(dealerCards, dealerTotal);
   return [playerTotal, dealerTotal, dealerTotal - dealerCards[0].value];
 }
 
@@ -275,25 +286,25 @@ function renderGameEnd() {
   } else if (scores[0] === scores[1]) {
     renderMessageBox("Draw");
     winner = 0;
+    bank += bet;
   } else {
     console.log(tableState, "No Result Yet");
     return;
   }
   dealerEl.children[0].setAttribute("class", dealerCards[0].cardString); //reveal hidden card!
-  if(winner === 1) bank += 2*bet;
+  if (winner === 1) bank += 2 * bet;
   bet = 0;
   renderBank();
   renderButtons();
   renderScore();
 }
 
-
 function aceValueAdjustment(deckCards, total) {
-  const aceCount = deckCards.filter(deckCard => deckCard.cardName === "A");
-  if(aceCount === 0) return total;
-  for(let i = 0; i < aceCount.length; i++){
+  const aceCount = deckCards.filter((deckCard) => deckCard.cardName === "A");
+  if (aceCount === 0) return total;
+  for (let i = 0; i < aceCount.length; i++) {
     total -= 10;
-    if(total < 22) return total;
+    if (total < 22) return total;
   }
   return total;
 }
