@@ -26,13 +26,11 @@ Next Steps:
 
 Screenshots:
 
-Initial starting screen for a new game:
-![starting screen]("images/begin_screen.png")
-![first bets placed]("images/first-bet-placed.png")
-![initial cards dealt]("images/initial_cards_dealt.png")
-![player hits]("images/player_hit.png")
-![player wins]("images/player_wins_hand.png")
-![new hand begun]("images/new_hand_with_updated_bank.png")
-![game over]("images/game_over.png")
+![starting screen](images/begin_screen.png)
+![first bets placed](images/first_bet_placed.png)
+![initial cards dealt](images/initial_cards_dealt.png)
+![player hits](images/player_hit.png)
+![player wins](images/player_wins_hand.png)
+![new hand begun](images/new_hand_with_updated_bank.png)
+![game over](images/game_over.png)
 
-Initial bet placed:
