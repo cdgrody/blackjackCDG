@@ -126,6 +126,7 @@ html {
     justify-content: space-around;
     grid-column: 1 / 2;
     grid-row: 4 / 5;
+    padding: 20px;
 }
 
 .chips > button {
