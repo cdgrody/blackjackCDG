@@ -3,6 +3,9 @@ Blackjack CDG
 Technologies Used:
 javascript, HTML, and CSS
 
+Link to Game:
+<!-- <insert link> -->
+
 Description: 
 This game of Blackjack is played with a 6 decks of 52 cards. The objective of the game is to beat the dealer by having a hand value of 21 or as close to 21 as possible without going over. Players place a bet within the limits of their bank and are then dealt two cards. They can choose to "hit" and receive additional cards or "stand" with their current hand or "double" which doubles their bet and draws only one additional card. The dealer must hit on a hand value of 16 or less.  
 
@@ -15,8 +18,15 @@ Getting Started:
 6) If the player wins, then 2x the bet is added to their account (the original bet plus the winnings).  If the player loses, the bet is taken away.  If the player and dealer tie, then the original bet amount is added back to the bank.  The user will then be prompted to press the "Play Again" button which will start a new hand.  The deck will not be regenerated until all the cards run out.
 7) If the player runs out of money, or just wants to start a new game, they can press the "Restart" button in the top left corner at any point.  This resets the bank, regenerates, and reshuffles the deck.  If the user's bank account drops to 0 after a hand, the "Restart" button will be the only one they can press.
 
+Next Steps:
+1) Add an option for the player to split the hand when the initial draw reveals two cards of the same value.  This will be a complicated funciton because I will essentially be creating two player hands that compete against the dealer.  It will also require me to render two player hands on the screen which will require some css magic.
+2) Incorporate a 'hint' box where the player can hover their cursor and see the recommended move.  This will require me to translate blackjack strategy tables into the javascript.  These tables look at the players hand and the dealer's upcard and provide a recommendation of which move the player should make based on statistics.  I would probably create a 2D matrix to stor these tables, which a hint variable would access in order to create the html text of the next revommended move.
+3) I want to create an "auto" player option where instead of hovering over the statistically recommended move, based on the strategy tables, is directly implemented after the hand is dealt. I then want to automate a betting algorithim where I can define how I want the player to bet after they lose, after they win once, or after they win (n) number of times.  Once I set the strategy, the program will play as many hands with the betting strategy until the player runs out of money.  I want to record how many hands were played, the highest earned value of the player, and when they reached that value.  By automating the game, I can test betting strategies, along with the best statistical approach to each hand, to see if I can find a way to increase the likelihood that I can make money.
+
+
 Screenshots:
 
 Initial starting screen for a new game:
+![starting screen]url("../images/begin_screen.png")
 
 Initial bet placed:
