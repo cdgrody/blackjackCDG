@@ -27,6 +27,12 @@ Next Steps:
 Screenshots:
 
 Initial starting screen for a new game:
-![starting screen]url("../images/begin_screen.png")
+![starting screen]url("images/begin_screen.png")
+![first bets placed]url("images/first-bet-placed.png")
+![initial cards dealt]url("images/initial_cards_dealt.png")
+![player hits]url("images/player_hit.png")
+![player wins]url("images/player_wins_hand.png")
+![new hand begun]url("images/new_hand_with_updated_bank.png")
+![game over]url("images/game_over.png")
 
 Initial bet placed:
