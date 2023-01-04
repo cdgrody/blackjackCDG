@@ -15,6 +15,9 @@ let numberOfDecks = 6;
 /*----- app's state (variables) -----*/
 let turn, tableState, winner, blackJackState;
 let firstMove = 0;
+//table state is the main state variable that controls the game flow
+//0 = start of a brand new game or a new hand, 1 = hand dealt and player decides their move, 2 = player's hand is finished and dealer's hand is revealed and dealt,
+//3 = it is the player's turn to bet, 4 = the player has lost all money and must hit the restart button to start over
 
 /*----- cached element references -----*/
 const buttonEl = document.querySelector(".buttons");
