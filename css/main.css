@@ -20,17 +20,27 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
   grid-area: 1 1 2 2;
   padding: 15px;
+  text-align: start;
+  color: rgba(255, 255, 153, 0.8);
+}
+
+.startOver > div {
+  font: Roboto;
+  margin: 0;
+  padding: 0;
+  font-size: 22px;
+  text-align: left;
 }
 
 .startOver > button {
-    height: 40px;
-    width: 120px;
-    font-size: 20px;
-    color: white;
-    background: black;
+  align-self: center;
+  height: 40px;
+  width: 120px;
+  font-size: 20px;
+  color: white;
+  background: black;
 }
 
 .msgCtr {
@@ -121,36 +131,36 @@ html {
 }
 
 .chips {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    grid-column: 1 / 2;
-    grid-row: 4 / 5;
-    padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+  padding: 20px;
 }
 
 .chips > button {
-    background: grey;
-    height: 80px;
-    width: 80px;
-    font-size: 30px;
-    text-align: center;
-    border-radius: 50%;
-    margin: 4px;
+  background: grey;
+  height: 80px;
+  width: 80px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 50%;
+  margin: 4px;
 }
 
-.chips > button:nth-child(1){
-    border: solid blue 10px;
+.chips > button:nth-child(1) {
+  border: solid blue 10px;
 }
 
-.chips > button:nth-child(2){
-    border: solid red 10px;
+.chips > button:nth-child(2) {
+  border: solid red 10px;
 }
 
-.chips > button:nth-child(3){
-    border: solid green 10px;
+.chips > button:nth-child(3) {
+  border: solid green 10px;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }

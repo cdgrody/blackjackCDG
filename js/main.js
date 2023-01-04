@@ -10,6 +10,8 @@ let bank;
 let bet = 0;
 let numberOfDecks = 6;
 
+
+
 /*----- app's state (variables) -----*/
 let turn, tableState, winner, blackJackState;
 let firstMove = 0;
@@ -83,6 +85,7 @@ function handleButtonClick(evt) {
     renderMessageBox("Place your bet to begin the game");
   }
 }
+
 function handleRestart() {
   tableState = 0;
   init();
