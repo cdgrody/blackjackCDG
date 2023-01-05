@@ -10,8 +10,6 @@ let bank;
 let bet = 0;
 let numberOfDecks = 6;
 
-
-
 /*----- app's state (variables) -----*/
 let turn, tableState, winner, blackJackState;
 let firstMove = 0;
@@ -64,8 +62,9 @@ function handleButtonClick(evt) {
     tableState = 2;
     while (calculateScores()[1] <= 16) dealerHit();
     determineWinner(); //determine the iwnner of the hand
-  } else if(btnType === "Double"){
-    if (bank - bet >= 0){ //if there is enough money in the bank, double the bet
+  } else if (btnType === "Double") {
+    if (bank - bet >= 0) {
+      //if there is enough money in the bank, double the bet
       firstMove = 0;
       tableState = 2;
       bank -= bet;
@@ -77,9 +76,9 @@ function handleButtonClick(evt) {
     } else {
       renderMessageBox();
     }
-  } else if(btnType === "Play Again"){
+  } else if (btnType === "Play Again") {
     init(); //start a new hand but don't reshuffle or reset the bank
-  } else if(btnType === "Reset Bet"){
+  } else if (btnType === "Reset Bet") {
     bank += bet;
     bet = 0;
     renderBank();
@@ -142,7 +141,7 @@ function assignCardValue(cardVal) {
 function shuffleDeck() {
   faces.forEach(function (cardVal) {
     suits.forEach(function (suit) {
-      for(let i = 0; i < numberOfDecks; i++){
+      for (let i = 0; i < numberOfDecks; i++) {
         cards.push({
           cardName: cardVal,
           suit: suit,
@@ -168,8 +167,8 @@ function calculateScores() {
   return [playerTotal, dealerTotal, dealerTotal - dealerCards[0].value];
 }
 
-function checkBlackJack(){
-  if(calculateScores()[1] === 21 || calculateScores()[0] === 21){
+function checkBlackJack() {
+  if (calculateScores()[1] === 21 || calculateScores()[0] === 21) {
     tableState = 2;
     blackJackState = 1;
     determineWinner();
@@ -186,11 +185,13 @@ function determineWinner() {
     renderMessageBox(`Dealer wins, player busted and loses $${bet}`);
     winner = -1;
   } else if (scores[0] > scores[1]) {
-    if(blackJackState === 1) renderMessageBox(`Blackjack! Player wins $${bet+=1.5*bet}`);
+    if (blackJackState === 1)
+      renderMessageBox(`Blackjack! Player wins $${(bet += 1.5 * bet)}`);
     renderMessageBox(`Player wins $${bet}`);
     winner = 1;
   } else if (scores[0] < scores[1]) {
-    if(blackJackState === 1) renderMessageBox(`Blackjack! Player loses $${bet}`);
+    if (blackJackState === 1)
+      renderMessageBox(`Blackjack! Player loses $${bet}`);
     renderMessageBox(`Dealer wins, player loses $${bet}`);
     winner = -1;
   } else if (scores[0] === scores[1]) {
@@ -239,7 +240,7 @@ function dealCard(turn) {
   cards.splice(cardIdx, 1);
 }
 
-function initialDeal(){
+function initialDeal() {
   turn = -1;
   dealCard(turn);
   turn = 1;
@@ -249,7 +250,6 @@ function initialDeal(){
   turn = 1;
   dealCard(turn);
 }
-
 
 /*----- Render Functions -----*/
 function renderBank() {
@@ -289,25 +289,26 @@ function renderMessageBox(message) {
     messageChild.innerHTML = `${message}`;
   } else if (tableState === 1) {
     messageChild.innerHTML = "Make your move...";
-    if(firstMove) messageChild.innerHTML = "Sorry. Not enough funds available to double.";
+    if (firstMove)
+      messageChild.innerHTML = "Sorry. Not enough funds available to double.";
   } else if (tableState === 2) {
     messageChild.innerHTML = `Game over! ${message}!`;
   }
   messageEl.appendChild(messageChild);
 }
 
-function renderChips(){
+function renderChips() {
   clearChipRenderings();
-  if (tableState === 0){
-    bets = ["bet5","bet10","bet20"];
+  if (tableState === 0) {
+    bets = ["bet5", "bet10", "bet20"];
     betValues = [5, 10, 20];
-    bets.forEach(function(bet){
+    bets.forEach(function (bet) {
       const betValue = bet.split("t")[1];
       bet = document.createElement("button");
-      bet.innerHTML = `$${betValue}`
+      bet.innerHTML = `$${betValue}`;
       bet.setAttribute("class", "preHand");
       chipsEl.appendChild(bet);
-    })
+    });
   }
 }
 
@@ -329,8 +330,8 @@ function renderButtons() {
     standChild.innerHTML = "Stand";
     buttonEl.appendChild(standChild);
     doubleChild.innerHTML = "Double";
-    if(firstMove) buttonEl.appendChild(doubleChild);
-  } else if (tableState === 2){
+    if (firstMove) buttonEl.appendChild(doubleChild);
+  } else if (tableState === 2) {
     const playAgainChild = document.createElement("button");
     playAgainChild.innerHTML = "Play Again";
     buttonEl.appendChild(playAgainChild);
@@ -352,11 +353,11 @@ function renderScore() {
   }
 }
 
-function renderEndgame(){
+function renderEndgame() {
   clearButtonRenderings();
   clearChipRenderings();
   tableState = 4;
-  renderMessageBox("Game over! You ran out of money.")
+  renderMessageBox("Game over! You ran out of money.");
 }
 
 function clearHands() {
