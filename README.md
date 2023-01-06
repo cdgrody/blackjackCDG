@@ -30,11 +30,7 @@ Blackjack is a card game played with 6 decks of 52 cards. The objective of the g
 - Automate a betting algorithm that defines betting strategies based on the player's bank and previous hands.
 - Add the option for the player to play with multiple hands at the same time.
 
-## Contributors
-[cdgrody](https://github.com/cdgrody)
-
-Screenshots:
-
+## Screenshots
 ![starting screen](images/begin_screen.png)
 ![first bets placed](images/first_bet_placed.png)
 ![initial cards dealt](images/initial_cards_dealt.png)
@@ -42,4 +38,7 @@ Screenshots:
 ![player wins](images/player_wins_hand.png)
 ![new hand begun](images/new_hand_with_updated_bank.png)
 ![game over](images/game_over.png)
+
+## Contributors
+[cdgrody](https://github.com/cdgrody)
 
