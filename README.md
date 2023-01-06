@@ -1,10 +1,11 @@
 Blackjack CDG
 
+Link to Game:
+https://cdgrody.github.io/blackjackCDG/
+
 Technologies Used:
 javascript, HTML, and CSS
 
-Link to Game:
-<!-- <insert link> -->
 
 Description: 
 This game of Blackjack is played with a 6 decks of 52 cards. The objective of the game is to beat the dealer by having a hand value of 21 or as close to 21 as possible without going over. Players place a bet within the limits of their bank and are then dealt two cards. They can choose to "hit" and receive additional cards or "stand" with their current hand or "double" which doubles their bet and draws only one additional card. The dealer must hit on a hand value of 16 or less.  
