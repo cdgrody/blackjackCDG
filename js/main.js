@@ -155,7 +155,7 @@ function shuffleDeck() {
 
 /*----- Controller Functions -----*/
 
-function calculateScores() {
+function calculateScores() { /////////////////////////////////////// Favorite Function
   let playerTotal = 0;
   let dealerTotal = 0;
   playerCards.forEach((playerCard) => (playerTotal += playerCard.value));
