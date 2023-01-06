@@ -155,7 +155,7 @@ function shuffleDeck() {
 
 /*----- Controller Functions -----*/
 
-function calculateScores() {
+function calculateScores() { ///////////////////////////////////favorite function///////////////////////////////////////////////////////
   let playerTotal = 0;
   let dealerTotal = 0;
   playerCards.forEach((playerCard) => (playerTotal += playerCard.value));
@@ -389,5 +389,6 @@ function clearButtonRenderings() {
     buttonEl.removeChild(buttonEl.children[0]);
   }
 }
-//run code
+
+
 init();
